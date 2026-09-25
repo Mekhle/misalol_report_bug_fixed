@@ -1,0 +1,50 @@
+# Local environment files and credentials - NEVER commit filled-in secrets
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+enx.txt
+**/credentials.json
+**/cert.pem
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local-only large draft page (excluded per owner request)
+newindex.html
+
+**/node_modules/
+**/.next/
+**/dist/
+**/build/
+**/target/
+**/__pycache__/
+*.py[cod]
+*.tsbuildinfo
+**/data/*.sqlite
+**/data/*.sqlite-*
+.vercel/
+**/.vercel/
+*.log
+.DS_Store
+Thumbs.db
+
+# Bundled archives are not source and may exceed GitHub's file limits
+*.zip
+*.rar
+
+# Local generated Constellations integration staging tree
+/.codex-constellations-stage/
+# Keep the remote repository limited to runtime website code
+*.md
+**/tests/
+.env.example
+**/.env.example
+local-mail-capture.jsonl
+
+powershell.cmd
+
+backend/scripts/local_mail_capture.py

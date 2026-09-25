@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — misa.lol</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+    <nav class="dash-navbar">
+        <div class="dash-navbar__inner">
+            <div class="dash-navbar__left">
+                <a href="/" class="navbar__logo"><span class="navbar__logo-icon">†</span> misa.lol</a>
+                <span class="dash-navbar__tagline">dummy dashboard<br>auth is live</span>
+            </div>
+            <div class="dash-navbar__right">
+                <a href="/" class="dash-navbar__view-btn">View site</a>
+                <div class="dash-navbar__user">
+                    <img class="dash-navbar__user-avatar" id="nav-avatar" src="/icons/google.webp" alt="">
+                    <div class="dash-navbar__user-info">
+                        <span class="dash-navbar__user-name" id="nav-name">loading…</span>
+                        <span class="dash-navbar__user-handle" id="nav-handle">misa.lol</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <aside class="sidebar">
+        <nav class="sidebar__nav">
+            <a href="/dashboard" class="sidebar__link sidebar__link--active">
+                <i class="fa-solid fa-table-cells sidebar__link-icon"></i>
+                Dashboard
+            </a>
+            <a href="/pricing" class="sidebar__link">
+                <i class="fa-solid fa-bolt sidebar__link-icon"></i>
+                Upgrade
+            </a>
+            <div class="sidebar__divider"></div>
+            <button type="button" class="sidebar__link" id="logout-btn">
+                <i class="fa-solid fa-right-from-bracket sidebar__link-icon"></i>
+                Log out
+            </button>
+        </nav>
+        <div class="sidebar__upgrade">
+            <div class="sidebar__upgrade-title">Page editor soon</div>
+            <p class="sidebar__upgrade-text">This dashboard only proves login works. The real editor is not ready yet.</p>
+            <a href="/pricing" class="sidebar__upgrade-btn">See plans</a>
+        </div>
+    </aside>
+
+    <main class="dashboard">
+        <section class="dashboard__content dashboard__content--full">
+            <header class="dash-header">
+                <div class="dash-header__label">Account</div>
+                <h1 class="dash-header__title heading-dashboard">You’re in.</h1>
+                <p class="dash-header__subtitle">Login and signup are working. This is a placeholder dashboard until the real one ships.</p>
+                <div class="dash-header__deco">be weird<br>online again</div>
+            </header>
+
+            <p class="auth-message" id="auth-message" hidden></p>
+
+            <div class="dash-stats">
+                <article class="panel" style="padding:18px 20px;">
+                    <div class="label-text">Status</div>
+                    <div class="heading-card" style="margin-top:8px;">Authenticated</div>
+                    <p class="body-text" style="margin-top:6px;">Session cookie + Postgres user row.</p>
+                </article>
+                <article class="panel" style="padding:18px 20px;">
+                    <div class="label-text">Views</div>
+                    <div class="heading-card" style="margin-top:8px;">0</div>
+                    <p class="body-text" style="margin-top:6px;">Dummy metric.</p>
+                </article>
+                <article class="panel" style="padding:18px 20px;">
+                    <div class="label-text">Links</div>
+                    <div class="heading-card" style="margin-top:8px;">0</div>
+                    <p class="body-text" style="margin-top:6px;">Dummy metric.</p>
+                </article>
+                <article class="panel" style="padding:18px 20px;">
+                    <div class="label-text">Plan</div>
+                    <div class="heading-card" style="margin-top:8px;">Free</div>
+                    <p class="body-text" style="margin-top:6px;">Placeholder.</p>
+                </article>
+            </div>
+
+            <h2 class="heading-card" style="margin: 8px 0 16px;">Your account</h2>
+            <div class="panel" style="padding:22px 24px; margin-bottom:24px;">
+                <p class="body-text"><strong style="color:var(--text-primary);">Email:</strong> <span id="account-email">—</span></p>
+                <p class="body-text" style="margin-top:8px;"><strong style="color:var(--text-primary);">Display name:</strong> <span id="account-name">—</span></p>
+                <p class="body-text" style="margin-top:8px;"><strong style="color:var(--text-primary);">Account ID:</strong> <span id="account-id">—</span> <button id="account-copy" type="button" class="btn btn-ghost" style="margin-left:8px; padding:4px 9px;">Copy</button></p>
+                <form id="username-form" class="auth-form" style="margin-top:20px; max-width:420px;">
+                    <div class="form-group">
+                        <label for="username">misa.lol username</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="username" name="username" placeholder="yourname" minlength="3" maxlength="24" autocomplete="username">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-ivory">Save username</button>
+                </form>
+            </div>
+
+            <h2 class="heading-card" style="margin: 8px 0 16px;">Login methods</h2>
+            <div class="connection-row" data-provider="email">
+                <div class="connection-row__left">
+                    <div class="connection-row__icon connection-row__icon--email"><i class="fa-regular fa-envelope"></i></div>
+                    <div class="connection-row__info">
+                        <div class="connection-row__name">Email</div>
+                        <div class="connection-row__status" data-status>Not set</div>
+                    </div>
+                </div>
+                <span class="connection-row__toggle connection-row__toggle--connect" data-state>Password</span>
+            </div>
+            <div class="connection-row" data-provider="google">
+                <div class="connection-row__left">
+                    <div class="connection-row__icon connection-row__icon--google"><img src="/icons/google.webp" alt=""></div>
+                    <div class="connection-row__info">
+                        <div class="connection-row__name">Google</div>
+                        <div class="connection-row__status" data-status>Not connected</div>
+                    </div>
+                </div>
+                <a class="connection-row__toggle connection-row__toggle--connect" href="/api/v1/auth/google?next=/dashboard">Connect</a>
+            </div>
+            <div class="connection-row" data-provider="discord">
+                <div class="connection-row__left">
+                    <div class="connection-row__icon connection-row__icon--discord"><img src="/icons/discord.webp" alt=""></div>
+                    <div class="connection-row__info">
+                        <div class="connection-row__name">Discord</div>
+                        <div class="connection-row__status" data-status>Not connected</div>
+                    </div>
+                </div>
+                <a class="connection-row__toggle connection-row__toggle--connect" href="/api/v1/auth/discord?next=/dashboard">Connect</a>
+            </div>
+            <div class="connection-row" data-provider="telegram">
+                <div class="connection-row__left">
+                    <div class="connection-row__icon connection-row__icon--telegram"><img src="/icons/telegram.webp" alt=""></div>
+                    <div class="connection-row__info">
+                        <div class="connection-row__name">Telegram</div>
+                        <div class="connection-row__status" data-status>Not connected</div>
+                    </div>
+                </div>
+                <a class="connection-row__toggle connection-row__toggle--connect" href="/api/v1/auth/telegram">Connect</a>
+            </div>
+            <div class="connection-row" data-provider="apple">
+                <div class="connection-row__left">
+                    <div class="connection-row__icon connection-row__icon--apple"><img src="/icons/apple.webp" alt=""></div>
+                    <div class="connection-row__info">
+                        <div class="connection-row__name">Apple</div>
+                        <div class="connection-row__status" data-status>Not connected</div>
+                    </div>
+                </div>
+                <a class="connection-row__toggle connection-row__toggle--connect" href="/api/v1/auth/apple?next=/dashboard">Connect</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/auth.js"></script>
+</body>
+</html>

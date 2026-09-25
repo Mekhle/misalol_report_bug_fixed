@@ -1,0 +1,6 @@
+﻿import { NextRequest, NextResponse } from "next/server";
+import { apiError } from "@/lib/server/http";
+import { nativeCoreEnabled } from "@/lib/server/rollout";
+import { currentUser, listSessions, revokeOtherSessions, revokeSessionById, sessionId, SESSION_COOKIE } from "@/lib/server/sessions";
+export const runtime="nodejs";
+export async function POST(request:NextRequest){if(!nativeCoreEnabled())return apiError("Not found.",404);try{const user=await currentUser(request);if(!user)return apiError("Not authenticated.",401);const body=await request.json().catch(()=>null) as {session_id?:unknown;others?:unknown}|null,token=request.cookies.get(SESSION_COOKIE)?.value;if(body?.others===true){const removed=await revokeOtherSessions(user.id,token);return NextResponse.json({ok:true,removed,sessions:await listSessions(user.id,token)})}const id=typeof body?.session_id==="string"?body.session_id:"";if(!id)return apiError("Pick a session to sign out.");if(token&&sessionId(token)===id)return apiError("Use log out to end this session.");if(!await revokeSessionById(user.id,id))return apiError("That session is already gone.",404);return NextResponse.json({ok:true,removed:1,sessions:await listSessions(user.id,token)})}catch{return apiError("Session storage is temporarily unavailable.",503)}}

@@ -1,0 +1,183 @@
+{
+	auto_https off
+}
+
+(tunnel_headers) {
+	header_up X-Forwarded-Proto {http.request.scheme}
+	header_up X-Forwarded-Host {http.request.host}
+	header_up X-Forwarded-For {http.request.header.CF-Connecting-IP}
+	header_up X-Real-IP {http.request.header.CF-Connecting-IP}
+	header_down -Server
+	header_down -X-Powered-By
+}
+
+http://localhost, http://127.0.0.1, http://misa.lol, http://www.misa.lol {
+	encode gzip
+	request_body {
+		max_size 150MB
+	}
+	header {
+		-Server
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https:;"
+	}
+
+	@admin_login path /admin/login /admin/login/*
+	handle @admin_login {
+		redir /admin 302
+	}
+	
+	@admin_short path /admin /admin/*
+	handle @admin_short {
+		rewrite * /dashboard{uri}
+		reverse_proxy frontend:3000 {
+			import tunnel_headers
+		}
+	}
+	
+	@admin_internal path /dashboard/admin /dashboard/admin/*
+	handle @admin_internal {
+		reverse_proxy frontend:3000 {
+			import tunnel_headers
+		}
+	}
+
+	@constellation_public path /c/*
+	handle @constellation_public {
+		rewrite * /dashboard{uri}
+		reverse_proxy frontend:3000 {
+			import tunnel_headers
+		}
+	}
+
+	@config_js path /js/config.js /config.js
+	handle @config_js {
+		reverse_proxy api:8000 {
+			import tunnel_headers
+		}
+	}
+
+	# Static assets: css, js, icons, images, fonts, site.webmanifest, robots.txt
+	@static path /css/* /js/* /icons/* /images/* /fonts/* /site.webmanifest /robots.txt
+	handle @static {
+		root * /srv/templates
+		file_server
+	}
+
+	# Marketing & Auth HTML pages
+	handle /login {
+		root * /srv/templates/pages/login
+		try_files /index.html =404
+		file_server
+	}
+	handle /signup {
+		root * /srv/templates/pages/signup
+		try_files /index.html =404
+		file_server
+	}
+	handle /forgot-password {
+		root * /srv/templates/pages/forgot-password
+		try_files /index.html =404
+		file_server
+	}
+	handle /reset-password {
+		root * /srv/templates/pages/reset-password
+		try_files /index.html =404
+		file_server
+	}
+	handle /pricing {
+		root * /srv/templates/pages/pricing
+		try_files /index.html =404
+		file_server
+	}
+	handle / {
+		root * /srv/templates/pages/index
+		try_files /index.html =404
+		file_server
+	}
+
+	# FastAPI API remains authoritative during staged native rollout
+	handle /api* {
+		reverse_proxy api:8000 {
+			import tunnel_headers
+		}
+	}
+
+	# Next.js dashboard & internal routes
+	handle /dashboard* {
+		reverse_proxy frontend:3000 {
+			import tunnel_headers
+		}
+	}
+
+	# Next.js static asset bundles
+	handle /_next* {
+		reverse_proxy frontend:3000 {
+			import tunnel_headers
+		}
+	}
+
+	# Public vanity profile URLs and fallback remain on FastAPI during staged native rollout
+	handle {
+		reverse_proxy api:8000 {
+			import tunnel_headers
+		}
+	}
+}
+
+http://ukvhq.dev {
+	encode gzip
+	request_body {
+		max_size 150MB
+	}
+	header {
+		-Server
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https:;"
+	}
+
+	handle /api* {
+		reverse_proxy api:8000 {
+			import tunnel_headers
+		}
+	}
+
+	handle_path /m/login* {
+		rewrite * /dashboard/admin/login
+		reverse_proxy frontend:3000 {
+			import tunnel_headers
+		}
+	}
+	handle_path /m* {
+		rewrite * /dashboard/admin
+		reverse_proxy frontend:3000 {
+			import tunnel_headers
+		}
+	}
+
+	handle /dashboard* {
+		reverse_proxy frontend:3000 {
+			import tunnel_headers
+		}
+	}
+	handle /_next* {
+		reverse_proxy frontend:3000 {
+			import tunnel_headers
+		}
+	}
+
+	handle / {
+		redir https://ukvhq.dev/m 302
+	}
+	handle {
+		respond "Not found" 404
+	}
+}

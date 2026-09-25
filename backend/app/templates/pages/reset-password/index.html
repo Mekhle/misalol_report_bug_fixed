@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset password — misa.lol</title>
+    <meta name="description" content="Set a new password for your misa.lol account.">
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#050606">
+    <link rel="canonical" href="https://misa.lol/reset-password">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/images/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="/css/v2.css">
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/v2.js" defer></script>
+</head>
+<body class="auth-page reset-page">
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ═══ SVG ICON SPRITE ═══ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+</svg>
+
+<div class="auth">
+  <div class="auth__panel">
+    <div class="auth__bar">
+      <a href="/" class="nav__logo" aria-label="misa.lol home"><span class="nav__dagger" aria-hidden="true">†</span>misa.lol</a>
+      <p class="auth__switch">remembered? <a href="/login">log in</a></p>
+    </div>
+
+    <main class="auth__body" id="main">
+      <p class="eyebrow">choose a new password</p>
+      <h1 class="title auth__title">Reset your <em>password.</em></h1>
+      <p class="lede auth__lede">This signs out every other session on the account.</p>
+
+      <p class="auth-message" id="auth-message" role="alert" aria-live="assertive" hidden></p>
+
+      <form class="auth__form" id="reset-form" method="POST" action="#" novalidate>
+        <input type="hidden" name="token" id="reset-token">
+        
+        <div class="field">
+          <div class="field__label"><label for="password">new password</label></div>
+          <div class="field__box">
+            <input class="field__input" id="password" name="password" type="password" autocomplete="new-password" required minlength="8" placeholder="••••••••" aria-describedby="pass-hint" data-pw>
+            <button class="field__eye" type="button" aria-label="Show password" aria-pressed="false" data-eye><svg class="ic" aria-hidden="true"><use href="#i-eye"/></svg></button>
+          </div>
+          <p class="field__hint" id="pass-hint"><span class="dot" aria-hidden="true"></span><span data-field-hint>8+ characters</span></p>
+        </div>
+
+        <div class="field">
+          <div class="field__label"><label for="confirm-password">confirm password</label></div>
+          <div class="field__box">
+            <input class="field__input" id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" required minlength="8" placeholder="••••••••" aria-describedby="pass2-hint" data-pw-confirm="password">
+            <button class="field__eye" type="button" aria-label="Show password" aria-pressed="false" data-eye><svg class="ic" aria-hidden="true"><use href="#i-eye"/></svg></button>
+          </div>
+          <p class="field__hint" id="pass2-hint"><span class="dot" aria-hidden="true"></span><span data-field-hint>same thing again</span></p>
+        </div>
+
+        <button class="btn btn--crimson btn--lg auth__submit" type="submit">Save new password <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+      </form>
+
+      <p class="auth__fine">Need a new link? <a href="/forgot-password">Request another reset link</a>.</p>
+    </main>
+
+    <div class="auth__foot">
+      <span>© 2026 misa.lol</span>
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+      <a href="/">← back to the front page</a>
+    </div>
+  </div>
+
+  <aside class="auth__stage auth__stage--video" aria-hidden="true">
+    <video class="auth__video" muted loop playsinline preload="none" data-src="/images/newbg.mp4" tabindex="-1"></video>
+    <div class="hero__glow"></div>
+    <div class="hero__dots"></div>
+    <p class="auth__note hand">make it strong. <small>you're all set.</small></p>
+  </aside>
+</div>
+
+</body>
+</html>
